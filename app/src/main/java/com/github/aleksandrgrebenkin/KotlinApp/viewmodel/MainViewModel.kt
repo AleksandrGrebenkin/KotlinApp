@@ -3,18 +3,20 @@ package com.github.aleksandrgrebenkin.KotlinApp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.aleksandrgrebenkin.KotlinApp.model.IModel
-import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
-import com.github.aleksandrgrebenkin.KotlinApp.model.implementation.Model
+import com.github.aleksandrgrebenkin.KotlinApp.model.data.NotesRepository
+import com.github.aleksandrgrebenkin.KotlinApp.view.ViewState.MainViewState
 
 class MainViewModel : ViewModel() {
 
-    private val model: IModel = Model()
-    private val notesLiveData = MutableLiveData<List<Note>>()
+    private val viewStateLiveData: MutableLiveData<MainViewState> = MutableLiveData()
 
     init {
-        notesLiveData.value = model.getNotes()
+        NotesRepository.getNotes().observeForever {
+            viewStateLiveData.value = viewStateLiveData.value?.copy(notes = it)
+                    ?: MainViewState(it)
+        }
     }
 
-    fun getNotesLiveData(): LiveData<List<Note>> = notesLiveData
+    fun getViewState(): LiveData<MainViewState> = viewStateLiveData
+
 }

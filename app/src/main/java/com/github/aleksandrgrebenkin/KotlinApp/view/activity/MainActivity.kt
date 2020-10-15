@@ -22,11 +22,18 @@ class MainActivity : AppCompatActivity() {
          viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         rv_notes.layoutManager = LinearLayoutManager(this)
-        notesAdapter = NotesAdapter()
+        notesAdapter = NotesAdapter {
+            NoteActivity.start(this, it)
+        }
         rv_notes.adapter = notesAdapter
 
-        viewModel.getNotesLiveData().observe(this, {
-            it?.let { notesAdapter.notes = it }
+        viewModel.getViewState().observe(this, {
+            it?.let { notesAdapter.notes = it.notes }
         })
+
+        fab.setOnClickListener {
+            NoteActivity.start(this)
+        }
+
     }
 }
