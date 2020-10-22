@@ -1,39 +1,41 @@
 package com.github.aleksandrgrebenkin.KotlinApp.view.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.aleksandrgrebenkin.KotlinApp.R
+import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
+import com.github.aleksandrgrebenkin.KotlinApp.view.ViewState.MainViewState
 import com.github.aleksandrgrebenkin.KotlinApp.view.adapter.NotesAdapter
 import com.github.aleksandrgrebenkin.KotlinApp.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var notesAdapter: NotesAdapter
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
+    override val layoutRes = R.layout.activity_main
+    lateinit var adapter: NotesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         rv_notes.layoutManager = LinearLayoutManager(this)
-        notesAdapter = NotesAdapter {
-            NoteActivity.start(this, it)
+        adapter = NotesAdapter {note ->
+            NoteActivity.start(this, note.id)
         }
-        rv_notes.adapter = notesAdapter
 
-        viewModel.getViewState().observe(this, {
-            it?.let { notesAdapter.notes = it.notes }
-        })
+        rv_notes.adapter = adapter
 
         fab.setOnClickListener {
             NoteActivity.start(this)
         }
 
+    }
+
+    override fun renderData(data: List<Note>?) {
+        data?.let { adapter.notes = it }
     }
 }
