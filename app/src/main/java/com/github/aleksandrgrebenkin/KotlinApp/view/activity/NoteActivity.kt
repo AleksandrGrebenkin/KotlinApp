@@ -2,18 +2,16 @@ package com.github.aleksandrgrebenkin.KotlinApp.view.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.github.aleksandrgrebenkin.KotlinApp.R
 import com.github.aleksandrgrebenkin.KotlinApp.extentions.DATE_TIME_FORMAT
+import com.github.aleksandrgrebenkin.KotlinApp.extentions.getColorInt
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
-import com.github.aleksandrgrebenkin.KotlinApp.view.ViewState.NoteViewState
-import com.github.aleksandrgrebenkin.KotlinApp.viewmodel.BaseViewModel
+import com.github.aleksandrgrebenkin.KotlinApp.view.viewstate.NoteViewState
 import com.github.aleksandrgrebenkin.KotlinApp.viewmodel.NoteViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
@@ -75,17 +73,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
             et_title.setText(it.title)
             et_body.setText(it.body)
 
-            val color = when (it.color) {
-                Note.Color.WHITE -> R.color.color_white
-                Note.Color.YELLOW -> R.color.color_yellow
-                Note.Color.GREEN -> R.color.color_green
-                Note.Color.BLUE -> R.color.color_blue
-                Note.Color.RED -> R.color.color_red
-                Note.Color.VIOLET -> R.color.color_violet
-                Note.Color.PINK -> R.color.color_pink
-            }
-
-            toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, color, null))
+            toolbar.setBackgroundColor(it.color.getColorInt(this))
         }
 
         et_title.addTextChangedListener(textChangeListener)

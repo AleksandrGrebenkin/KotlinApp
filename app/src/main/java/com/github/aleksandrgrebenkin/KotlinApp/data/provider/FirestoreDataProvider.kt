@@ -1,55 +1,61 @@
 package com.github.aleksandrgrebenkin.KotlinApp.data.provider
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.aleksandrgrebenkin.KotlinApp.data.entity.User
+import com.github.aleksandrgrebenkin.KotlinApp.data.errors.NoAuthException
 import com.github.aleksandrgrebenkin.KotlinApp.data.model.NoteResult
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FirestoreDataProvider: DataProvider {
+class FirestoreDataProvider : DataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"
+        private const val USERS_COLLECTION = "users"
     }
 
-    private val store = FirebaseFirestore.getInstance()
-    private val notesReference = store.collection(NOTES_COLLECTION)
+    private val store by lazy { FirebaseFirestore.getInstance() }
+    private val notesReference
+        get() = currentUser?.let {
+            store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
+        } ?: throw NoAuthException()
+    private val currentUser
+        get() = FirebaseAuth.getInstance().currentUser
 
-    override fun getNotes(): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-        notesReference.addSnapshotListener{snapshot, error ->
+    override fun getNotes() = MutableLiveData<NoteResult>().apply {
+        notesReference.addSnapshotListener { snapshot, error ->
             error?.let {
-                result.value = NoteResult.Error(it)
+                value = NoteResult.Error(it)
                 return@addSnapshotListener
             }
             snapshot?.let {
                 val notes = it.documents.map { it.toObject(Note::class.java) }
-                result.value = NoteResult.Success(notes)
+                value = NoteResult.Success(notes)
             }
         }
-        return result
     }
 
-    override fun saveNote(note: Note): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
+    override fun saveNote(note: Note) = MutableLiveData<NoteResult>().apply {
         notesReference.document(note.id).set(note)
                 .addOnSuccessListener {
-                    result.value = NoteResult.Success(note)
+                    value = NoteResult.Success(note)
                 }.addOnFailureListener {
-                    result.value = NoteResult.Error(it)
+                    value = NoteResult.Error(it)
                 }
-        return result
     }
 
-    override fun getNoteById(id: String): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
+    override fun getNoteById(id: String) = MutableLiveData<NoteResult>().apply {
         notesReference.document(id).get()
-                .addOnSuccessListener {snapshot ->
+                .addOnSuccessListener { snapshot ->
                     val note = snapshot.toObject(Note::class.java) as Note
-                    result.value = NoteResult.Success(note)
+                    value = NoteResult.Success(note)
                 }.addOnFailureListener {
-                    result.value = NoteResult.Error(it)
+                    value = NoteResult.Error(it)
                 }
-        return result
+    }
+
+    override fun getCurrentUser() = MutableLiveData<User?>().apply {
+        value = currentUser?.let { User(it.displayName ?: "", it.email ?: "") }
     }
 }

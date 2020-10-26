@@ -1,4 +1,4 @@
-package com.github.aleksandrgrebenkin.KotlinApp.view.ViewState
+package com.github.aleksandrgrebenkin.KotlinApp.view.viewstate
 
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
 
