@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:646791980983:android:5c18357cff8e247e54aa32",
+        "mobilesdk_app_id": "1:646791980983:android:38c9c1907198d0b254aa32",
         "android_client_info": {
-          "package_name": "com.github.aleksandrgrebenkin.KotlinApp"
+          "package_name": "com.github.aleksandrgrebenkin.kotlinapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "646791980983-f73r6ropn5nifgin8a47r38qjn4vbkeu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.aleksandrgrebenkin.kotlinapp",
+            "certificate_hash": "9f6120b0890ad1c91e3ec318d2b1c0514cf62543"
+          }
+        },
         {
           "client_id": "646791980983-vq29qtsehnlfvcb6srppvgldh714i8e7.apps.googleusercontent.com",
           "client_type": 3
