@@ -4,7 +4,7 @@ import androidx.lifecycle.Observer
 import com.github.aleksandrgrebenkin.KotlinApp.data.model.NoteResult
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.NotesRepository
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
-import com.github.aleksandrgrebenkin.KotlinApp.view.ViewState.MainViewState
+import com.github.aleksandrgrebenkin.KotlinApp.view.viewstate.MainViewState
 
 class MainViewModel : BaseViewModel<List<Note>?, MainViewState>() {
 

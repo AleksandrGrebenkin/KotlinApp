@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.github.aleksandrgrebenkin.KotlinApp.R
+import com.github.aleksandrgrebenkin.KotlinApp.extentions.getColorInt
 import com.github.aleksandrgrebenkin.KotlinApp.model.data.entity.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
@@ -37,18 +37,7 @@ class NotesAdapter(val onClickListener: ((Note) -> Unit)? = null)
             note_title.text = note.title
             note_body.text = note.body
 
-            val color = when (note.color) {
-                Note.Color.WHITE -> R.color.color_white
-                Note.Color.YELLOW -> R.color.color_yellow
-                Note.Color.GREEN -> R.color.color_green
-                Note.Color.BLUE -> R.color.color_blue
-                Note.Color.RED -> R.color.color_red
-                Note.Color.VIOLET -> R.color.color_violet
-                Note.Color.PINK -> R.color.color_pink
-            }
-
-            (this as CardView).setCardBackgroundColor(
-                    ResourcesCompat.getColor(resources, color, null))
+            (this as CardView).setCardBackgroundColor(note.color.getColorInt(context))
 
             setOnClickListener {
                 onClickListener?.invoke(note)
