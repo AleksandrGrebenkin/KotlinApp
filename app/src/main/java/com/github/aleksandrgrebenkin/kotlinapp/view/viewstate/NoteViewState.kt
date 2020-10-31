@@ -3,6 +3,8 @@ package com.github.aleksandrgrebenkin.kotlinapp.view.viewstate
 import com.github.aleksandrgrebenkin.kotlinapp.model.data.entity.Note
 
 class NoteViewState(
-        note: Note? = null,
+        data: Data = Data(),
         error: Throwable? = null
-) : BaseViewState<Note?>(note, error)
+) : BaseViewState<NoteViewState.Data>(data, error) {
+    class Data(val note: Note? = null, val isDeleted: Boolean = false)
+}

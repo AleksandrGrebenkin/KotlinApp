@@ -8,20 +8,20 @@ import com.github.aleksandrgrebenkin.kotlinapp.model.data.entity.Note
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FirestoreDataProvider : DataProvider {
+class FirestoreDataProvider(val store: FirebaseFirestore, val auth: FirebaseAuth) : DataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"
         private const val USERS_COLLECTION = "users"
     }
 
-    private val store by lazy { FirebaseFirestore.getInstance() }
     private val notesReference
         get() = currentUser?.let {
             store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
         } ?: throw NoAuthException()
+
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = auth.currentUser
 
     override fun getNotes() = MutableLiveData<NoteResult>().apply {
         notesReference.addSnapshotListener { snapshot, error ->
@@ -40,6 +40,15 @@ class FirestoreDataProvider : DataProvider {
         notesReference.document(note.id).set(note)
                 .addOnSuccessListener {
                     value = NoteResult.Success(note)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+    }
+
+    override fun deleteNote(id: String) = MutableLiveData<NoteResult>().apply {
+        notesReference.document(id).delete()
+                .addOnSuccessListener {
+                    value = NoteResult.Success(null)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
                 }
