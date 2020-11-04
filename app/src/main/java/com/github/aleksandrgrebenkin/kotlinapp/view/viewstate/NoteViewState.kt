@@ -6,5 +6,5 @@ class NoteViewState(
         data: Data = Data(),
         error: Throwable? = null
 ) : BaseViewState<NoteViewState.Data>(data, error) {
-    class Data(val note: Note? = null, val isDeleted: Boolean = false)
+    data class Data(val note: Note? = null, val isDeleted: Boolean = false)
 }
