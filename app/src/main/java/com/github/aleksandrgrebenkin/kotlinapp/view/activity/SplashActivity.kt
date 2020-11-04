@@ -2,9 +2,10 @@ package com.github.aleksandrgrebenkin.kotlinapp.view.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import com.github.aleksandrgrebenkin.kotlinapp.view.viewstate.SplashViewState
 import com.github.aleksandrgrebenkin.kotlinapp.viewmodel.SplashViewModel
+
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
 
@@ -14,7 +15,7 @@ class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
         }
     }
 
-    override val viewModel by lazy { ViewModelProvider(this).get(SplashViewModel::class.java) }
+    override val viewModel: SplashViewModel by viewModel()
     override val layoutRes = null
 
     override fun onResume() {

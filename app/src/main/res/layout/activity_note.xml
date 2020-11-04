@@ -17,6 +17,19 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways" />
 
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <com.github.aleksandrgrebenkin.kotlinapp.view.customview.ColorPickerView
+                android:id="@+id/color_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize" />
+        </HorizontalScrollView>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -30,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Заголовок"
-            android:textColorHint="@android:color/black">
+            android:textColorHint="@android:color/black"
+            tools:ignore="HardcodedText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_title"
@@ -46,7 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@null"
-            android:hint="Текст заметки" />
+            android:hint="Текст заметки"
+            android:importantForAutofill="no"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 

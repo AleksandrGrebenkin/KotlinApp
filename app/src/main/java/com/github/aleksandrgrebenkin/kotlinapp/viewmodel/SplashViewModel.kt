@@ -4,10 +4,10 @@ import com.github.aleksandrgrebenkin.kotlinapp.data.errors.NoAuthException
 import com.github.aleksandrgrebenkin.kotlinapp.model.data.NotesRepository
 import com.github.aleksandrgrebenkin.kotlinapp.view.viewstate.SplashViewState
 
-class SplashViewModel : BaseViewModel<Boolean?, SplashViewState>() {
+class SplashViewModel(val notesRepository: NotesRepository) : BaseViewModel<Boolean?, SplashViewState>() {
 
     fun requestUser() {
-        NotesRepository.getCurrentUser().observeForever {
+        notesRepository.getCurrentUser().observeForever {
             viewStateLiveData.value = it?.let { SplashViewState(true) } ?: let {
                 SplashViewState(error = NoAuthException())
             }
