@@ -55,7 +55,7 @@ class FirestoreDataProviderTest {
     fun `should throw NoAuthException if no auth`() {
         var result: Any? = null
         every { mockAuth.currentUser } returns null
-        provider.getNotes().observeForever {
+        provider.subscribeToNotes().observeForever {
             result = (it as? NoteResult.Error)?.error
         }
         assertTrue(result is NoAuthException)
@@ -70,7 +70,7 @@ class FirestoreDataProviderTest {
         every { mockSnapshot.documents } returns listOf(mockDocument1, mockDocument2, mockDocument3)
         every { mockResultCollection.addSnapshotListener(capture(slot)) } returns mockk()
 
-        provider.getNotes().observeForever {
+        provider.subscribeToNotes().observeForever {
             result = (it as NoteResult.Success<List<Note>>)?.data
         }
         slot.captured.onEvent(mockSnapshot, null)
@@ -85,7 +85,7 @@ class FirestoreDataProviderTest {
         val slot = slot<EventListener<QuerySnapshot>>()
         every { mockResultCollection.addSnapshotListener(capture(slot)) } returns mockk()
 
-        provider.getNotes().observeForever {
+        provider.subscribeToNotes().observeForever {
             result = (it as NoteResult.Error)?.error
         }
         slot.captured.onEvent(null, mockError)

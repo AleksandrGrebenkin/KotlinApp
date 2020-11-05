@@ -11,12 +11,11 @@ import com.firebase.ui.auth.AuthUI
 import com.github.aleksandrgrebenkin.kotlinapp.R
 import com.github.aleksandrgrebenkin.kotlinapp.model.data.entity.Note
 import com.github.aleksandrgrebenkin.kotlinapp.view.adapter.NotesAdapter
-import com.github.aleksandrgrebenkin.kotlinapp.view.viewstate.MainViewState
 import com.github.aleksandrgrebenkin.kotlinapp.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
+class MainActivity : BaseActivity<List<Note>?>() {
 
     companion object {
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {

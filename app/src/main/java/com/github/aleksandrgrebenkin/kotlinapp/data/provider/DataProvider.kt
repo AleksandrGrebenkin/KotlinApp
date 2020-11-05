@@ -1,14 +1,14 @@
 package com.github.aleksandrgrebenkin.kotlinapp.data.provider
 
-import androidx.lifecycle.LiveData
 import com.github.aleksandrgrebenkin.kotlinapp.data.entity.User
 import com.github.aleksandrgrebenkin.kotlinapp.data.model.NoteResult
 import com.github.aleksandrgrebenkin.kotlinapp.model.data.entity.Note
+import kotlinx.coroutines.channels.ReceiveChannel
 
 interface DataProvider {
-    fun getNotes(): LiveData<NoteResult>
-    fun saveNote(note: Note): LiveData<NoteResult>
-    fun getNoteById(id: String): LiveData<NoteResult>
-    fun deleteNote(id: String): LiveData<NoteResult>
-    fun getCurrentUser(): LiveData<User?>
+    fun subscribeToNotes(): ReceiveChannel<NoteResult>
+    suspend fun saveNote(note: Note): Note
+    suspend fun getNoteById(id: String): Note
+    suspend fun deleteNote(id: String)
+    suspend fun getCurrentUser(): User?
 }

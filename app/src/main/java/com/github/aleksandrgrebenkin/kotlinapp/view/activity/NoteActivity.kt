@@ -12,14 +12,14 @@ import com.github.aleksandrgrebenkin.kotlinapp.R
 import com.github.aleksandrgrebenkin.kotlinapp.extentions.DATE_TIME_FORMAT
 import com.github.aleksandrgrebenkin.kotlinapp.extentions.getColorInt
 import com.github.aleksandrgrebenkin.kotlinapp.model.data.entity.Note
-import com.github.aleksandrgrebenkin.kotlinapp.view.viewstate.NoteViewState
+import com.github.aleksandrgrebenkin.kotlinapp.view.common.NoteData
 import com.github.aleksandrgrebenkin.kotlinapp.viewmodel.NoteViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
+class NoteActivity : BaseActivity<NoteData>() {
 
     companion object {
         private val EXTRA_NOTE = "EXTRA_NOTE"
@@ -57,7 +57,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
         initView()
     }
 
-    override fun renderData(data: NoteViewState.Data) {
+    override fun renderData(data: NoteData) {
         if (data.isDeleted) finish()
 
         this.note = data.note
@@ -77,6 +77,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
             et_body.setText(it.body)
 
             toolbar.setBackgroundColor(it.color.getColorInt(this))
+            this.color = it.color
         }
 
         color_picker.onColorClickListener = {
