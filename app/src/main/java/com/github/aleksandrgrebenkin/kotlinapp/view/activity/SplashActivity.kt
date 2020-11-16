@@ -2,12 +2,10 @@ package com.github.aleksandrgrebenkin.kotlinapp.view.activity
 
 import android.content.Context
 import android.content.Intent
-import com.github.aleksandrgrebenkin.kotlinapp.view.viewstate.SplashViewState
 import com.github.aleksandrgrebenkin.kotlinapp.viewmodel.SplashViewModel
-
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity : BaseActivity<Boolean?>() {
 
     companion object {
         fun start(context: Context) = Intent(context, SplashActivity::class.java).apply {
